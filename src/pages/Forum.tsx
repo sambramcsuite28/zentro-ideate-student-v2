@@ -2,17 +2,22 @@ import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
 import { MessageSquare, Tag, Clock, Lightbulb, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface ForumThread {
   id: string;
   title: string;
   context: string;
   author: string;
+  authorId: string;
   tags: string[];
   replies: number;
   lastActivity: string;
   isInUserTopics?: boolean;
 }
+
+// Current user ID (in a real app, this would come from auth context)
+const CURRENT_USER_ID = "user-1";
 
 const threads: ForumThread[] = [
   {
@@ -20,6 +25,7 @@ const threads: ForumThread[] = [
     title: "Best approach for implementing real-time collaboration?",
     context: "Building a shared whiteboard feature for my FYP",
     author: "Rahul M.",
+    authorId: "user-1",
     tags: ["WebSockets", "FYP"],
     replies: 12,
     lastActivity: "2 hours ago",
@@ -30,6 +36,7 @@ const threads: ForumThread[] = [
     title: "Resources for learning system design from scratch",
     context: "Preparing for product-based company interviews",
     author: "Priya S.",
+    authorId: "user-2",
     tags: ["System Design", "Interview"],
     replies: 24,
     lastActivity: "5 hours ago",
@@ -40,6 +47,7 @@ const threads: ForumThread[] = [
     title: "Deploying ML models on edge devices - experiences?",
     context: "Trying TensorFlow Lite vs ONNX for Raspberry Pi",
     author: "Aditya K.",
+    authorId: "user-3",
     tags: ["ML", "Edge Computing"],
     replies: 8,
     lastActivity: "1 day ago",
@@ -49,6 +57,7 @@ const threads: ForumThread[] = [
     title: "How to structure a research paper for IEEE publication?",
     context: "First time submitting to a journal",
     author: "Sneha R.",
+    authorId: "user-4",
     tags: ["Research", "Publishing"],
     replies: 15,
     lastActivity: "2 days ago",
@@ -58,6 +67,7 @@ const threads: ForumThread[] = [
     title: "Rust vs Go for building microservices - pros and cons",
     context: "Starting a new backend project, need language recommendations",
     author: "Vikram P.",
+    authorId: "user-5",
     tags: ["Rust", "Go", "Backend"],
     replies: 31,
     lastActivity: "3 days ago",
@@ -95,7 +105,12 @@ const Forum = () => {
             </h2>
             <div className="space-y-3">
               {userTopics.map((thread, index) => (
-                <ThreadCard key={thread.id} thread={thread} index={index} />
+                <ThreadCard 
+                  key={thread.id} 
+                  thread={thread} 
+                  index={index} 
+                  isOwner={thread.authorId === CURRENT_USER_ID}
+                />
               ))}
             </div>
           </div>
@@ -111,7 +126,8 @@ const Forum = () => {
               <ThreadCard 
                 key={thread.id} 
                 thread={thread} 
-                index={index + userTopics.length} 
+                index={index + userTopics.length}
+                isOwner={thread.authorId === CURRENT_USER_ID}
               />
             ))}
           </div>
@@ -121,7 +137,7 @@ const Forum = () => {
   );
 };
 
-function ThreadCard({ thread, index }: { thread: ForumThread; index: number }) {
+function ThreadCard({ thread, index, isOwner }: { thread: ForumThread; index: number; isOwner: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -130,9 +146,11 @@ function ThreadCard({ thread, index }: { thread: ForumThread; index: number }) {
       className="group flex items-center justify-between gap-4 rounded-xl bg-card p-5 shadow-card transition-shadow hover:shadow-card-hover"
     >
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-foreground mb-1 truncate">
-          {thread.title}
-        </h3>
+        <Link to={`/forum/${thread.id}`}>
+          <h3 className="font-medium text-foreground mb-1 truncate hover:text-primary transition-colors">
+            {thread.title}
+          </h3>
+        </Link>
         <p className="text-sm text-muted-foreground mb-3 truncate">
           {thread.context}
         </p>
@@ -161,13 +179,17 @@ function ThreadCard({ thread, index }: { thread: ForumThread; index: number }) {
       </div>
 
       <div className="flex items-center gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button variant="ghost" size="sm" className="gap-1.5">
-          <Lightbulb className="h-3.5 w-3.5" />
-          Convert to idea
-        </Button>
-        <Button variant="ghost" size="icon">
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+        {isOwner && (
+          <Button variant="ghost" size="sm" className="gap-1.5">
+            <Lightbulb className="h-3.5 w-3.5" />
+            Convert to idea
+          </Button>
+        )}
+        <Link to={`/forum/${thread.id}`}>
+          <Button variant="ghost" size="icon">
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );

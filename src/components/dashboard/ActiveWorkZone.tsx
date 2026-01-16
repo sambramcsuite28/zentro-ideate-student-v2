@@ -80,7 +80,7 @@ export function ActiveWorkZone() {
   };
 
   return (
-    <section className="w-full">
+    <section className="w-full overflow-hidden">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h2 className="font-display text-xl font-semibold text-foreground">
@@ -124,7 +124,7 @@ export function ActiveWorkZone() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="group flex w-[300px] shrink-0 flex-col justify-between rounded-xl bg-card p-5 shadow-card transition-shadow hover:shadow-card-hover"
+              className="group flex w-[280px] shrink-0 flex-col justify-between rounded-xl bg-card p-5 shadow-card transition-shadow hover:shadow-card-hover"
               style={{ scrollSnapAlign: "start" }}
             >
               <div className="space-y-3">

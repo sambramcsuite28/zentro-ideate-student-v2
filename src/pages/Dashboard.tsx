@@ -9,7 +9,7 @@ import { EyesOnYou } from "@/components/dashboard/EyesOnYou";
 const Dashboard = () => {
   return (
     <Layout>
-      <div className="container py-8">
+      <div className="container py-8 max-w-full overflow-x-hidden">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="font-display text-2xl font-bold text-foreground">
@@ -28,7 +28,7 @@ const Dashboard = () => {
         {/* Main Content Grid */}
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           {/* Left Column - Primary Content */}
-          <div className="space-y-8">
+          <div className="space-y-8 min-w-0">
             <ActiveWorkZone />
             <SmartNudgeEngine />
           </div>
