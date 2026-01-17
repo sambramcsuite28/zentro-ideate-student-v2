@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
+import ChallengeDetail from "./pages/ChallengeDetail";
 import ProofOfWork from "./pages/ProofOfWork";
 import Leaderboard from "./pages/Leaderboard";
 import Repository from "./pages/Repository";
+import RepoDetail from "./pages/RepoDetail";
 import Forum from "./pages/Forum";
 import ForumTopic from "./pages/ForumTopic";
 import NotFound from "./pages/NotFound";
@@ -25,9 +27,11 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/challenges" element={<Challenges />} />
+            <Route path="/challenges/:challengeId" element={<ChallengeDetail />} />
             <Route path="/proof" element={<ProofOfWork />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/repo" element={<Repository />} />
+            <Route path="/repo/:repoId" element={<RepoDetail />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/forum/:topicId" element={<ForumTopic />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
