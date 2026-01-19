@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import LadderGraph from "@/components/leaderboard/LadderGraph";
 import RankingList from "@/components/leaderboard/RankingList";
 import CompetitiveFeed from "@/components/leaderboard/CompetitiveFeed";
+import { SuggestionsPanel } from "@/components/dashboard/SuggestionsPanel";
 
 const Leaderboard = () => {
   return (
@@ -19,9 +20,10 @@ const Leaderboard = () => {
 
         {/* Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Ladder Graph */}
+          {/* Left Column - Ladder Graph & Suggestions */}
           <div className="lg:col-span-1 space-y-6">
             <LadderGraph />
+            <SuggestionsPanel />
             <CompetitiveFeed />
           </div>
 

@@ -1,7 +1,8 @@
 import { Layout } from "@/components/layout/Layout";
 import { ProgressPulse } from "@/components/dashboard/ProgressPulse";
 import { ActiveWorkZone } from "@/components/dashboard/ActiveWorkZone";
-import { SmartNudgeEngine } from "@/components/dashboard/SmartNudgeEngine";
+import { ScoreDashboardCard } from "@/components/dashboard/ScoreDashboardCard";
+import { SuggestionsPanel } from "@/components/dashboard/SuggestionsPanel";
 import { ProgressSnapshot } from "@/components/dashboard/ProgressSnapshot";
 import { PeerBenchmark } from "@/components/dashboard/PeerBenchmark";
 import { EyesOnYou } from "@/components/dashboard/EyesOnYou";
@@ -25,12 +26,17 @@ const Dashboard = () => {
           <ProgressPulse />
         </div>
 
+        {/* Score Dashboard Card */}
+        <div className="mb-8">
+          <ScoreDashboardCard />
+        </div>
+
         {/* Main Content Grid */}
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           {/* Left Column - Primary Content */}
           <div className="space-y-8 min-w-0">
             <ActiveWorkZone />
-            <SmartNudgeEngine />
+            <SuggestionsPanel />
           </div>
 
           {/* Right Column - Contextual Widgets */}
