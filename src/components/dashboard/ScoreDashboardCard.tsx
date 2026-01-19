@@ -2,48 +2,47 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Award, Users, ChevronRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-} from "recharts";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 import { ScoreBreakdownModal } from "./ScoreBreakdownModal";
-
-const radarData = [
-  { subject: "Projects", score: 85, fullMark: 100 },
-  { subject: "Challenges", score: 72, fullMark: 100 },
-  { subject: "Certs", score: 65, fullMark: 100 },
-  { subject: "Feedback", score: 78, fullMark: 100 },
-  { subject: "GitHub", score: 90, fullMark: 100 },
-];
-
+const radarData = [{
+  subject: "Projects",
+  score: 85,
+  fullMark: 100
+}, {
+  subject: "Challenges",
+  score: 72,
+  fullMark: 100
+}, {
+  subject: "Certs",
+  score: 65,
+  fullMark: 100
+}, {
+  subject: "Feedback",
+  score: 78,
+  fullMark: 100
+}, {
+  subject: "GitHub",
+  score: 90,
+  fullMark: 100
+}];
 const innovationScore = 878;
 const industryReadinessScore = 82;
 const peerPercentile = 85;
-
 export function ScoreDashboardCard() {
   const [showBreakdown, setShowBreakdown] = useState(false);
-
-  return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="rounded-xl bg-card p-6 shadow-card"
-      >
+  return <>
+      <motion.div initial={{
+      opacity: 0,
+      y: 10
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} className="bg-card p-6 shadow-card rounded-lg">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-display font-semibold text-foreground">
             Your Score Dashboard
           </h3>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowBreakdown(true)}
-            className="text-primary hover:text-primary/80 gap-1"
-          >
+          <Button variant="ghost" size="sm" onClick={() => setShowBreakdown(true)} className="text-primary hover:text-primary/80 gap-1">
             View Details
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -53,10 +52,9 @@ export function ScoreDashboardCard() {
           {/* Left: Score Cards */}
           <div className="space-y-4">
             {/* Innovation Score */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative overflow-hidden rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 p-4 border border-primary/20"
-            >
+            <motion.div whileHover={{
+            scale: 1.02
+          }} className="relative overflow-hidden rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 p-4 border border-primary/20">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -82,10 +80,9 @@ export function ScoreDashboardCard() {
             </motion.div>
 
             {/* Industry Readiness Score */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative overflow-hidden rounded-lg bg-gradient-to-br from-success/10 to-success/5 p-4 border border-success/20"
-            >
+            <motion.div whileHover={{
+            scale: 1.02
+          }} className="relative overflow-hidden rounded-lg bg-gradient-to-br from-success/10 to-success/5 p-4 border border-success/20">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -98,12 +95,14 @@ export function ScoreDashboardCard() {
                     {industryReadinessScore}%
                   </p>
                   <div className="mt-2 h-2 w-full rounded-full bg-muted overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-success"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${industryReadinessScore}%` }}
-                      transition={{ delay: 0.3, duration: 0.8 }}
-                    />
+                    <motion.div className="h-full rounded-full bg-success" initial={{
+                    width: 0
+                  }} animate={{
+                    width: `${industryReadinessScore}%`
+                  }} transition={{
+                    delay: 0.3,
+                    duration: 0.8
+                  }} />
                   </div>
                 </div>
               </div>
@@ -111,10 +110,9 @@ export function ScoreDashboardCard() {
             </motion.div>
 
             {/* Peer Percentile */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="rounded-lg bg-accent/50 p-4 border border-border"
-            >
+            <motion.div whileHover={{
+            scale: 1.02
+          }} className="rounded-lg bg-accent/50 p-4 border border-border">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                   <Users className="h-5 w-5 text-primary" />
@@ -143,22 +141,15 @@ export function ScoreDashboardCard() {
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                   <PolarGrid stroke="hsl(var(--border))" />
-                  <PolarAngleAxis
-                    dataKey="subject"
-                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                  />
-                  <PolarRadiusAxis
-                    angle={90}
-                    domain={[0, 100]}
-                    tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                  />
-                  <Radar
-                    name="Score"
-                    dataKey="score"
-                    stroke="hsl(var(--primary))"
-                    fill="hsl(var(--primary))"
-                    fillOpacity={0.3}
-                  />
+                  <PolarAngleAxis dataKey="subject" tick={{
+                  fill: "hsl(var(--muted-foreground))",
+                  fontSize: 11
+                }} />
+                  <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{
+                  fill: "hsl(var(--muted-foreground))",
+                  fontSize: 10
+                }} />
+                  <Radar name="Score" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.3} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
@@ -167,6 +158,5 @@ export function ScoreDashboardCard() {
       </motion.div>
 
       <ScoreBreakdownModal open={showBreakdown} onOpenChange={setShowBreakdown} />
-    </>
-  );
+    </>;
 }
