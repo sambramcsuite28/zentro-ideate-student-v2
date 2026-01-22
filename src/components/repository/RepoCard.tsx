@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Code, FileText, Star, GitFork, User, Calendar, Bookmark, Share2, ExternalLink, ArrowRight } from "lucide-react";
+import { Code, FileText, Star, GitFork, User, Calendar, Bookmark, Share2, ExternalLink, ArrowRight, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -32,9 +32,10 @@ interface RepoCardProps {
   index: number;
   onBookmark?: (id: string) => void;
   onShare?: (id: string) => void;
+  onCollaborate?: () => void;
 }
 
-export const RepoCard = ({ item, index, onBookmark, onShare }: RepoCardProps) => {
+export const RepoCard = ({ item, index, onBookmark, onShare, onCollaborate }: RepoCardProps) => {
   const navigate = useNavigate();
   const typeInfo = typeConfig[item.type];
   const TypeIcon = typeInfo.icon;
@@ -166,6 +167,17 @@ export const RepoCard = ({ item, index, onBookmark, onShare }: RepoCardProps) =>
           View Details
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
+        {/* Collaborate button - only show for non-owned items */}
+        {item.authorId !== CURRENT_USER_ID && onCollaborate && (
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={onCollaborate}
+            title="Request to collaborate"
+          >
+            <Users className="h-4 w-4" />
+          </Button>
+        )}
         {item.githubUrl && (
           <Button variant="outline" size="icon" asChild>
             <a href={item.githubUrl} target="_blank" rel="noopener noreferrer">

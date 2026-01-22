@@ -1,50 +1,32 @@
 import { Layout } from "@/components/layout/Layout";
-import { ProgressPulse } from "@/components/dashboard/ProgressPulse";
-import { ActiveWorkZone } from "@/components/dashboard/ActiveWorkZone";
-import { ScoreDashboardCard } from "@/components/dashboard/ScoreDashboardCard";
-import { SuggestionsPanel } from "@/components/dashboard/SuggestionsPanel";
-import { ProgressSnapshot } from "@/components/dashboard/ProgressSnapshot";
-import { PeerBenchmark } from "@/components/dashboard/PeerBenchmark";
-import { EyesOnYou } from "@/components/dashboard/EyesOnYou";
+import { LeftSidebar } from "@/components/dashboard/LeftSidebar";
+import { DashboardFeed } from "@/components/dashboard/DashboardFeed";
+import { RightSidebar } from "@/components/dashboard/RightSidebar";
 
 const Dashboard = () => {
   return (
     <Layout>
-      <div className="container py-8 max-w-full overflow-x-hidden">
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="font-display text-2xl font-bold text-foreground">
-            Welcome back, Arjun
-          </h1>
-          <p className="text-muted-foreground">
-            Your innovation journey at a glance
-          </p>
-        </div>
+      <div className="container py-6 max-w-7xl">
+        {/* LinkedIn-style 3-column layout */}
+        <div className="grid gap-6 lg:grid-cols-[280px_1fr_300px]">
+          {/* Left Sidebar - Profile & Metrics */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">
+              <LeftSidebar />
+            </div>
+          </aside>
 
-        {/* Progress Pulse - Hero Section */}
-        <div className="mb-8">
-          <ProgressPulse />
-        </div>
+          {/* Center - Feed */}
+          <main className="min-w-0">
+            <DashboardFeed />
+          </main>
 
-        {/* Score Dashboard Card */}
-        <div className="mb-8">
-          <ScoreDashboardCard />
-        </div>
-
-        {/* Main Content Grid */}
-        <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-          {/* Left Column - Primary Content */}
-          <div className="space-y-8 min-w-0">
-            <ActiveWorkZone />
-            <SuggestionsPanel />
-          </div>
-
-          {/* Right Column - Contextual Widgets */}
-          <div className="space-y-4">
-            <ProgressSnapshot />
-            <PeerBenchmark />
-            <EyesOnYou />
-          </div>
+          {/* Right Sidebar - Actions & Trending */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">
+              <RightSidebar />
+            </div>
+          </aside>
         </div>
       </div>
     </Layout>

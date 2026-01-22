@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { Search, Library, FolderOpen } from "lucide-react";
+import { Search, Library, FolderOpen, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RepoCard, RepoItem } from "@/components/repository/RepoCard";
 import { MyRepoPanel } from "@/components/repository/MyRepoPanel";
+import { CreateProjectModal } from "@/components/repository/CreateProjectModal";
+import { CollaborationRequestModal } from "@/components/repository/CollaborationRequestModal";
 import { Button } from "@/components/ui/button";
 
 const exploreItems: RepoItem[] = [
@@ -85,17 +88,42 @@ const exploreItems: RepoItem[] = [
 const typeFilters = ["All", "Projects", "Papers", "Snippets"];
 
 const Repository = () => {
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [collabModalOpen, setCollabModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<{
+    id: string;
+    title: string;
+    author: string;
+    tags: string[];
+  } | null>(null);
+
+  const handleCollaborateRequest = (item: RepoItem) => {
+    setSelectedProject({
+      id: item.id,
+      title: item.title,
+      author: item.author,
+      tags: item.tags,
+    });
+    setCollabModalOpen(true);
+  };
+
   return (
     <Layout>
       <div className="container py-8">
         {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="font-display text-2xl font-bold text-foreground">
-            Repository
-          </h1>
-          <p className="text-muted-foreground">
-            Searchable archive of projects, papers, and code snippets
-          </p>
+        <div className="mb-6 flex items-start justify-between">
+          <div>
+            <h1 className="font-display text-2xl font-bold text-foreground">
+              Repository
+            </h1>
+            <p className="text-muted-foreground">
+              Searchable archive of projects, papers, and code snippets
+            </p>
+          </div>
+          <Button className="gap-2" onClick={() => setCreateModalOpen(true)}>
+            <Plus className="h-4 w-4" />
+            Add New
+          </Button>
         </div>
 
         {/* Tabs Navigation */}
@@ -138,17 +166,30 @@ const Repository = () => {
             {/* Items Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {exploreItems.map((item, index) => (
-                <RepoCard key={item.id} item={item} index={index} />
+                <RepoCard 
+                  key={item.id} 
+                  item={item} 
+                  index={index}
+                  onCollaborate={() => handleCollaborateRequest(item)}
+                />
               ))}
             </div>
           </TabsContent>
 
           {/* My Repository Tab */}
           <TabsContent value="my">
-            <MyRepoPanel />
+            <MyRepoPanel onCreateNew={() => setCreateModalOpen(true)} />
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modals */}
+      <CreateProjectModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
+      <CollaborationRequestModal 
+        open={collabModalOpen} 
+        onOpenChange={setCollabModalOpen}
+        project={selectedProject}
+      />
     </Layout>
   );
 };
