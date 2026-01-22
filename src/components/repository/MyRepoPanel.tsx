@@ -68,7 +68,11 @@ const savedItems: RepoItem[] = [
   },
 ];
 
-export const MyRepoPanel = () => {
+interface MyRepoPanelProps {
+  onCreateNew?: () => void;
+}
+
+export const MyRepoPanel = ({ onCreateNew }: MyRepoPanelProps) => {
   const pinnedItems = myItems.filter(item => item.isPinned);
   const allMyItems = myItems;
 
@@ -130,6 +134,7 @@ export const MyRepoPanel = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: allMyItems.length * 0.05 }}
+              onClick={onCreateNew}
               className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/50 p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer min-h-[300px]"
             >
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
