@@ -1,22 +1,18 @@
 import { motion } from "framer-motion";
 import { Users, Target, Briefcase, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
 
-// Peer Standing Card Data
-const peerData = [
-  { name: "You", value: 28 },
-  { name: "Others", value: 72 },
-];
-
-const COLORS = ["hsl(var(--primary))", "hsl(var(--secondary))"];
+// Peer Standing Data
+const peerRanking = {
+  rank: 28,
+  total: 100,
+  position: 14, // actual position out of 50 students
+  totalStudents: 50,
+};
 
 export function ProgressPulse() {
+  const percentile = peerRanking.rank;
+  
   return (
     <section className="w-full">
       <div className="grid gap-4 md:grid-cols-3">
@@ -35,33 +31,35 @@ export function ProgressPulse() {
             </span>
           </div>
           <div className="flex flex-1 items-center gap-4">
-            <div className="h-16 w-16 shrink-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={peerData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={18}
-                    outerRadius={28}
-                    paddingAngle={2}
-                    dataKey="value"
-                    strokeWidth={0}
-                  >
-                    {peerData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
+            {/* Vertical Bar Ranking */}
+            <div className="relative flex h-16 w-8 flex-col justify-end rounded-md bg-secondary overflow-hidden">
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: `${100 - percentile}%` }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="w-full bg-primary rounded-t-sm"
+              />
+              {/* Position marker */}
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary-foreground shadow-sm"
+                style={{ bottom: `${100 - percentile}%` }}
+              />
             </div>
-            <div className="min-w-0">
+            {/* Ranking labels */}
+            <div className="flex flex-col justify-between h-16 text-[10px] text-muted-foreground">
+              <span>Top</span>
+              <span>Bottom</span>
+            </div>
+            <div className="min-w-0 flex-1">
               <p className="font-display text-lg font-semibold text-foreground">
-                Top 28%
+                Rank #{peerRanking.position}
               </p>
               <p className="text-xs text-muted-foreground">
-                Compared to department peers
+                Top {percentile}% of {peerRanking.totalStudents} peers
               </p>
+              <div className="mt-1 flex items-center gap-1">
+                <span className="text-[10px] text-primary font-medium">↑ 3 spots this week</span>
+              </div>
             </div>
           </div>
         </motion.div>
