@@ -1,14 +1,46 @@
 import { motion } from "framer-motion";
-import { TrendingUp, Award, Users, Zap, Target, Briefcase, ArrowRight, ChevronUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+import { Eye, User, TrendingUp, Users, ChevronUp } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const innovationScore = 878;
-const industryReadinessScore = 82;
 const peerRank = 14;
 const totalPeers = 50;
-const weeklyGain = 24;
+
+interface Viewer {
+  name: string;
+  role: string;
+  timestamp: string;
+}
+
+const viewers: Viewer[] = [
+  {
+    name: "Dr. Sharma",
+    role: "Innovation Cell",
+    timestamp: "2 days ago",
+  },
+  {
+    name: "Mahindra Reviewer",
+    role: "Challenge Evaluator",
+    timestamp: "1 week ago",
+  },
+  {
+    name: "Prof. Verma",
+    role: "Faculty Mentor",
+    timestamp: "3 days ago",
+  },
+];
+
+interface EyesOnProject {
+  id: string;
+  title: string;
+  views: number;
+  trend: "up" | "down" | "stable";
+}
+
+const eyesOnProjects: EyesOnProject[] = [
+  { id: "1", title: "Drone Detection System", views: 45, trend: "up" },
+  { id: "2", title: "LRU Cache in Rust", views: 32, trend: "up" },
+  { id: "3", title: "Mental Health Chatbot", views: 28, trend: "stable" },
+];
 
 export function LeftSidebar() {
   return (
@@ -32,20 +64,35 @@ export function LeftSidebar() {
           <p className="text-xs text-muted-foreground">VIT University, Vellore</p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Peer Standing - Compact */}
         <div className="border-t border-border/50 px-4 py-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">Profile views</span>
-            <span className="font-semibold text-primary">142</span>
+          <div className="flex items-center gap-2 mb-2">
+            <Users className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Peer Standing</span>
           </div>
-          <div className="flex items-center justify-between text-xs mt-1">
-            <span className="text-muted-foreground">Project impressions</span>
-            <span className="font-semibold text-primary">89</span>
+          <div className="flex items-center gap-3">
+            {/* Vertical Bar */}
+            <div className="relative h-14 w-4 rounded-sm bg-secondary overflow-hidden">
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: `${((totalPeers - peerRank + 1) / totalPeers) * 100}%` }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="absolute bottom-0 w-full bg-primary rounded-t-sm"
+              />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground">Rank #{peerRank}</p>
+              <p className="text-[10px] text-muted-foreground">of {totalPeers} peers</p>
+              <p className="text-[10px] text-success flex items-center gap-0.5">
+                <ChevronUp className="h-2.5 w-2.5" />
+                3 spots this week
+              </p>
+            </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Innovation Score Card */}
+      {/* Eyes On Your Work - Key Productivity Element */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,105 +100,56 @@ export function LeftSidebar() {
         className="rounded-xl bg-card p-4 shadow-card"
       >
         <div className="flex items-center gap-2 mb-3">
-          <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Zap className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex-1">
-            <span className="text-xs text-muted-foreground">Innovation Score</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold text-foreground">{innovationScore}</span>
-              <span className="text-xs text-success flex items-center gap-0.5">
-                <ChevronUp className="h-3 w-3" />
-                +{weeklyGain}
-              </span>
+          <Eye className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-semibold text-foreground">Eyes on Your Work</h3>
+        </div>
+        
+        {/* Project Views */}
+        <div className="space-y-2 mb-4">
+          {eyesOnProjects.map((project) => (
+            <div
+              key={project.id}
+              className="flex items-center justify-between py-1.5 border-b border-border/30 last:border-0"
+            >
+              <span className="text-xs text-foreground truncate flex-1 pr-2">{project.title}</span>
+              <div className="flex items-center gap-1 shrink-0">
+                <Eye className="h-3 w-3 text-muted-foreground" />
+                <span className="text-xs font-medium text-foreground">{project.views}</span>
+                {project.trend === "up" && (
+                  <TrendingUp className="h-3 w-3 text-success" />
+                )}
+              </div>
             </div>
+          ))}
+        </div>
+        
+        <div className="pt-3 border-t border-border/50">
+          <p className="text-[10px] text-muted-foreground mb-2">Who viewed your work</p>
+          <div className="space-y-2">
+            {viewers.map((viewer, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-secondary">
+                  <User className="h-3 w-3 text-secondary-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-foreground truncate">
+                    {viewer.name}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {viewer.role}
+                  </p>
+                </div>
+                <span className="text-[10px] text-muted-foreground/70 shrink-0">
+                  {viewer.timestamp}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="text-xs text-muted-foreground flex items-center justify-between">
-          <span>Rank #{peerRank} of {totalPeers}</span>
-          <span className="text-primary">Top {Math.round((peerRank / totalPeers) * 100)}%</span>
-        </div>
-      </motion.div>
-
-      {/* Industry Readiness */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        className="rounded-xl bg-card p-4 shadow-card"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <div className="h-8 w-8 rounded-lg bg-success/10 flex items-center justify-center">
-            <Award className="h-4 w-4 text-success" />
-          </div>
-          <div className="flex-1">
-            <span className="text-xs text-muted-foreground">Industry Readiness</span>
-            <span className="text-xl font-bold text-foreground block">{industryReadinessScore}%</span>
-          </div>
-        </div>
-        <Progress value={industryReadinessScore} className="h-1.5" />
-        <p className="text-xs text-muted-foreground mt-2">+8% from last month</p>
-      </motion.div>
-
-      {/* Peer Standing */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="rounded-xl bg-card p-4 shadow-card"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Peer Standing</span>
-        </div>
-        <div className="flex items-center gap-3">
-          {/* Vertical Bar */}
-          <div className="relative h-20 w-6 rounded-md bg-secondary overflow-hidden">
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: `${((totalPeers - peerRank + 1) / totalPeers) * 100}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="absolute bottom-0 w-full bg-primary rounded-t-sm"
-            />
-            <div 
-              className="absolute left-0 right-0 h-0.5 bg-primary-foreground"
-              style={{ bottom: `${((totalPeers - peerRank + 1) / totalPeers) * 100}%` }}
-            />
-          </div>
-          <div>
-            <p className="font-semibold text-foreground">Rank #{peerRank}</p>
-            <p className="text-xs text-muted-foreground">of {totalPeers} peers</p>
-            <p className="text-xs text-success mt-1">↑ 3 spots this week</p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Recommended Challenge */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="rounded-xl bg-card p-4 shadow-card"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Briefcase className="h-4 w-4 text-muted-foreground" />
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Recommended</span>
-        </div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center">
-            <span className="font-bold text-accent-foreground">M</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">AI in Manufacturing</p>
-            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-              1 match this week
-            </span>
-          </div>
-        </div>
-        <Button variant="ghost" size="sm" className="w-full justify-between text-primary hover:bg-primary/5">
-          Explore Now
-          <ArrowRight className="h-3 w-3" />
-        </Button>
+        
+        <p className="text-[10px] text-primary font-medium mt-3 text-center">
+          105 total views this week
+        </p>
       </motion.div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Lightbulb, ArrowRight, TrendingUp, Target, GitBranch, Award, CheckCircle, Trophy, Eye, Flame } from "lucide-react";
+import { Lightbulb, ArrowRight, TrendingUp, Target, GitBranch, Award, CheckCircle, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Suggestion {
@@ -41,37 +41,10 @@ const suggestions: Suggestion[] = [
   },
 ];
 
-interface TrendingTopic {
-  id: string;
-  title: string;
-  posts: number;
-}
-
-const trendingTopics: TrendingTopic[] = [
-  { id: "1", title: "System Design Interview", posts: 234 },
-  { id: "2", title: "LLM Fine-tuning", posts: 189 },
-  { id: "3", title: "Edge Computing", posts: 156 },
-  { id: "4", title: "Resume Tips", posts: 142 },
-  { id: "5", title: "Hackathon Prep", posts: 128 },
-];
-
-interface EyesOnProject {
-  id: string;
-  title: string;
-  views: number;
-  trend: "up" | "down" | "stable";
-}
-
-const eyesOnProjects: EyesOnProject[] = [
-  { id: "1", title: "Drone Detection System", views: 45, trend: "up" },
-  { id: "2", title: "LRU Cache in Rust", views: 32, trend: "up" },
-  { id: "3", title: "Mental Health Chatbot", views: 28, trend: "stable" },
-];
-
 export function RightSidebar() {
   return (
     <div className="space-y-4">
-      {/* Next Best Actions */}
+      {/* Next Best Actions - Primary Productivity Focus */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -118,74 +91,11 @@ export function RightSidebar() {
         </div>
       </motion.div>
 
-      {/* Trending Topics */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="rounded-xl bg-card p-4 shadow-card"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Flame className="h-4 w-4 text-orange-500" />
-          <h3 className="text-sm font-semibold text-foreground">Trending Topics</h3>
-        </div>
-        <div className="space-y-2">
-          {trendingTopics.map((topic, index) => (
-            <div
-              key={topic.id}
-              className="flex items-center justify-between py-1.5 border-b border-border/50 last:border-0 hover:bg-accent/30 -mx-1 px-1 rounded cursor-pointer transition-colors"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground w-4">{index + 1}.</span>
-                <span className="text-xs font-medium text-foreground">{topic.title}</span>
-              </div>
-              <span className="text-[10px] text-muted-foreground">{topic.posts} posts</span>
-            </div>
-          ))}
-        </div>
-        <Button variant="ghost" size="sm" className="w-full mt-2 text-xs text-primary">
-          Show more
-        </Button>
-      </motion.div>
-
-      {/* Eyes On Your Work */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        className="rounded-xl bg-card p-4 shadow-card"
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Eye className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-sm font-semibold text-foreground">Eyes on Your Work</h3>
-        </div>
-        <div className="space-y-2">
-          {eyesOnProjects.map((project) => (
-            <div
-              key={project.id}
-              className="flex items-center justify-between py-1.5"
-            >
-              <span className="text-xs text-foreground truncate flex-1">{project.title}</span>
-              <div className="flex items-center gap-1 shrink-0">
-                <Eye className="h-3 w-3 text-muted-foreground" />
-                <span className="text-xs font-medium text-foreground">{project.views}</span>
-                {project.trend === "up" && (
-                  <TrendingUp className="h-3 w-3 text-success" />
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="text-[10px] text-muted-foreground mt-2">
-          Total views this week: 105
-        </p>
-      </motion.div>
-
       {/* Leaderboard Preview */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.1 }}
         className="rounded-xl bg-card p-4 shadow-card"
       >
         <div className="flex items-center gap-2 mb-3">
@@ -218,6 +128,34 @@ export function RightSidebar() {
           View Full Leaderboard
           <ArrowRight className="h-3 w-3" />
         </Button>
+      </motion.div>
+
+      {/* Quick Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="rounded-xl bg-card p-4 shadow-card"
+      >
+        <h3 className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Weekly Progress</h3>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="text-center p-2 rounded-lg bg-secondary/50">
+            <p className="text-lg font-bold text-foreground">3</p>
+            <p className="text-[10px] text-muted-foreground">Challenges</p>
+          </div>
+          <div className="text-center p-2 rounded-lg bg-secondary/50">
+            <p className="text-lg font-bold text-foreground">2</p>
+            <p className="text-[10px] text-muted-foreground">Projects</p>
+          </div>
+          <div className="text-center p-2 rounded-lg bg-secondary/50">
+            <p className="text-lg font-bold text-foreground">1</p>
+            <p className="text-[10px] text-muted-foreground">Certification</p>
+          </div>
+          <div className="text-center p-2 rounded-lg bg-success/10 border border-success/20">
+            <p className="text-lg font-bold text-success">+24</p>
+            <p className="text-[10px] text-muted-foreground">Score Gain</p>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
