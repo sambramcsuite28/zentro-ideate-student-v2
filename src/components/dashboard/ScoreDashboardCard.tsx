@@ -110,7 +110,26 @@ export function ScoreDashboardCard() {
             </motion.div>
 
             {/* Peer Percentile */}
-            
+            <motion.div whileHover={{
+            scale: 1.02
+          }} className="rounded-md bg-accent/50 p-3 border border-border">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                  <Users className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-medium text-muted-foreground">
+                    Peer Percentile
+                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-display text-base font-bold text-foreground">
+                      Top {100 - peerPercentile}%
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">of campus</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
           {/* Right: Radar Chart */}
